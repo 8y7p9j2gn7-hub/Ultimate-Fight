@@ -1,0 +1,4225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Sevilla Brawl Ultimate Fight</title>
+
+<style>
+*{
+box-sizing:border-box;
+user-select:none;
+-webkit-user-select:none;
+-webkit-tap-highlight-color:transparent
+}
+
+html,body{
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:#050505;
+color:white;
+font-family:Arial,sans-serif;
+touch-action:none
+}
+
+body{
+position:relative
+}
+
+button{
+font-family:inherit;
+-webkit-appearance:none;
+appearance:none;
+cursor:pointer;
+touch-action:manipulation;
+pointer-events:auto!important
+}
+
+.screen{
+position:absolute;
+inset:0;
+display:none;
+overflow:hidden;
+pointer-events:none
+}
+
+.screen.active{
+display:flex;
+pointer-events:auto
+}
+
+/* ================= MENÚ ================= */
+
+#screen-menu{
+flex-direction:column;
+align-items:center;
+justify-content:center;
+background:
+radial-gradient(circle at 50% 20%,rgba(239,68,68,.4),transparent 35%),
+linear-gradient(135deg,#050505,#180508 50%,#020617)
+}
+
+.menu-bg{
+position:absolute;
+inset:0;
+overflow:hidden;
+pointer-events:none!important;
+z-index:0
+}
+
+.bg-light{
+position:absolute;
+width:500px;
+height:500px;
+border-radius:50%;
+background:rgba(220,38,38,.08);
+filter:blur(40px);
+animation:pulse 4s infinite alternate
+}
+
+.bg-light.one{left:-250px;top:10%}
+.bg-light.two{
+right:-280px;
+bottom:-100px;
+background:rgba(37,99,235,.08)
+}
+
+@keyframes pulse{
+from{transform:scale(.8);opacity:.4}
+to{transform:scale(1.2);opacity:1}
+}
+
+.logo-small{
+position:relative;
+z-index:3;
+color:#facc15;
+font-size:12px;
+font-weight:900;
+letter-spacing:6px;
+margin-bottom:7px
+}
+
+.logo{
+position:relative;
+z-index:3;
+text-align:center;
+font-size:clamp(34px,9vw,65px);
+line-height:.82;
+font-weight:1000;
+font-style:italic;
+background:linear-gradient(#fff,#facc15 35%,#ef4444 68%,#7f1d1d);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+filter:drop-shadow(0 8px 0 #09090b) drop-shadow(0 0 20px rgba(239,68,68,.7))
+}
+
+.logo-sub{
+position:relative;
+z-index:3;
+margin-top:10px;
+color:#e2e8f0;
+font-size:10px;
+font-weight:900;
+letter-spacing:3px
+}
+
+.menu-card{
+position:relative;
+z-index:10;
+width:min(92%,400px);
+margin-top:15px;
+padding:14px;
+border-radius:22px;
+border:1px solid rgba(255,255,255,.12);
+background:rgba(15,23,42,.9);
+backdrop-filter:blur(18px);
+box-shadow:0 25px 70px #000
+}
+
+.menu-stats{
+display:flex;
+justify-content:space-around;
+margin-bottom:7px
+}
+
+.menu-stat{text-align:center}
+
+.menu-stat b{
+display:block;
+font-size:17px;
+color:#facc15
+}
+
+.menu-stat span{
+font-size:9px;
+color:#94a3b8;
+font-weight:900
+}
+
+.menu-btn{
+width:100%;
+border:0;
+border-radius:12px;
+margin:4px 0;
+padding:12px;
+color:white;
+font-size:11px;
+font-weight:1000;
+letter-spacing:1px;
+background:linear-gradient(90deg,#dc2626,#991b1b);
+border:2px solid #facc15
+}
+
+.menu-btn.blue{
+background:linear-gradient(90deg,#2563eb,#1e3a8a);
+border-color:#60a5fa
+}
+
+.menu-btn.purple{
+background:linear-gradient(90deg,#7c3aed,#4c1d95);
+border-color:#c4b5fd
+}
+
+.menu-btn.orange{
+background:linear-gradient(90deg,#d97706,#b45309);
+border-color:#fde047
+}
+
+.menu-btn.green{
+background:linear-gradient(90deg,#16a34a,#166534);
+border-color:#4ade80
+}
+
+.menu-btn.pink{
+background:linear-gradient(90deg,#ec4899,#9d174d);
+border-color:#f9a8d4
+}
+
+.menu-btn.locked{
+background:linear-gradient(90deg,#334155,#111827);
+border-color:#64748b;
+opacity:.75
+}
+
+.menu-btn:active{
+transform:scale(.97)
+}
+
+/* ================= MUNDO 2 ================= */
+
+#screen-world2{
+background:
+radial-gradient(circle at 20% 15%,rgba(244,114,182,.45),transparent 30%),
+radial-gradient(circle at 80% 80%,rgba(168,85,247,.4),transparent 35%),
+linear-gradient(135deg,#4a044e,#be185d 45%,#7e22ce);
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center
+}
+
+.world2-content{
+position:relative;
+z-index:5;
+width:min(92%,450px);
+padding:25px;
+border-radius:25px;
+background:rgba(40,5,35,.78);
+border:2px solid #f9a8d4;
+box-shadow:0 0 50px rgba(236,72,153,.5)
+}
+
+.world2-title{
+font-size:clamp(35px,10vw,65px);
+font-weight:1000;
+font-style:italic;
+color:#f9a8d4;
+text-shadow:0 5px #4a044e,0 0 25px #f472b6
+}
+
+.world2-content p{
+color:#fce7f3;
+font-weight:900
+}
+
+/* ================= PANELES ================= */
+
+.overlay{
+position:absolute;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.9);
+backdrop-filter:blur(12px);
+z-index:5000;
+padding:15px;
+pointer-events:none
+}
+
+.overlay.show{
+display:flex;
+pointer-events:auto
+}
+
+.panel{
+width:min(95%,500px);
+max-height:92vh;
+overflow:hidden;
+display:flex;
+flex-direction:column;
+padding:20px;
+border-radius:22px;
+border:2px solid #334155;
+background:linear-gradient(145deg,#111827,#020617);
+box-shadow:0 25px 80px #000;
+pointer-events:auto
+}
+
+.panel h2{
+margin:0 0 10px;
+text-align:center;
+color:#facc15;
+font-size:22px
+}
+
+.close{
+width:100%;
+margin-top:15px;
+padding:12px;
+border:0;
+border-radius:11px;
+background:#334155;
+color:white;
+font-weight:900
+}
+
+/* ================= TIENDA ================= */
+
+.shop-coins{
+text-align:center;
+margin:5px 0 14px;
+font-size:16px;
+font-weight:900;
+color:#facc15
+}
+
+.shop-scroll-container{
+flex:1;
+overflow-y:auto;
+overflow-x:hidden;
+padding-right:4px;
+touch-action:pan-y;
+-webkit-overflow-scrolling:touch
+}
+
+.shop-scroll-container::-webkit-scrollbar{
+width:6px
+}
+
+.shop-scroll-container::-webkit-scrollbar-thumb{
+background:#334155;
+border-radius:10px
+}
+
+.shop-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+
+.skin-card{
+position:relative;
+padding:12px 8px;
+border-radius:16px;
+background:#0f172a;
+border:2px solid #334155;
+text-align:center;
+overflow:hidden
+}
+
+.skin-card.equipped{
+border-color:#facc15;
+box-shadow:0 0 18px rgba(250,204,21,.25)
+}
+
+.skin-preview{
+width:75px;
+height:90px;
+margin:0 auto 8px;
+position:relative;
+border-radius:14px;
+border:3px solid #fff;
+box-shadow:0 7px 15px #000;
+overflow:visible
+}
+
+.preview-head{
+position:absolute;
+width:34px;
+height:34px;
+border-radius:50%;
+left:50%;
+top:7px;
+transform:translateX(-50%);
+background:#e0a77a;
+border:2px solid #111;
+z-index:4
+}
+
+.preview-body{
+position:absolute;
+width:47px;
+height:38px;
+left:50%;
+top:40px;
+transform:translateX(-50%);
+border-radius:10px;
+background:#64748b;
+border:2px solid #111
+}
+
+.preview-legs{
+position:absolute;
+width:47px;
+height:20px;
+left:50%;
+bottom:3px;
+transform:translateX(-50%);
+border-radius:8px;
+background:#334155;
+border:2px solid #111
+}
+
+.preview-eye{
+position:absolute;
+width:4px;
+height:6px;
+border-radius:50%;
+background:#111;
+top:19px;
+z-index:8
+}
+
+.preview-eye.left{left:17px}
+.preview-eye.right{right:17px}
+
+.skin-card b{
+display:block;
+font-size:11px;
+margin-bottom:4px
+}
+
+.skin-price{
+font-size:10px;
+color:#facc15;
+font-weight:900
+}
+
+.skin-card button{
+width:100%;
+margin-top:8px;
+padding:8px;
+border:0;
+border-radius:8px;
+background:#2563eb;
+color:white;
+font-size:10px;
+font-weight:900
+}
+
+.skin-card button.equip{
+background:#16a34a
+}
+
+.skin-card button.locked{
+background:#7c2d12
+}
+
+/* SKINS */
+
+.clasic{background:linear-gradient(#fff,#94a3b8)}
+.boxer{background:linear-gradient(#dc2626,#111827)}
+.clown{background:linear-gradient(135deg,#ef4444,#7c3aed)}
+.bat{background:linear-gradient(#111827,#020617)}
+.robot{background:linear-gradient(#60a5fa,#e0f2fe)}
+.gold{background:linear-gradient(#fef08a,#a16207)}
+.fire{background:linear-gradient(#f97316,#7c2d12)}
+.electric{background:linear-gradient(#fef08a,#2563eb)}
+.diamond{background:linear-gradient(#67e8f9,#1e3a8a)}
+.king{background:linear-gradient(#facc15,#581c87)}
+.messi{background:linear-gradient(#74acdf,#ffffff)}
+.lamine{background:linear-gradient(#dc2626,#facc15)}
+.cristiano{background:linear-gradient(#cc0000,#006600)}
+.doraemon{background:linear-gradient(#0099ff,#ffffff)}
+.sonic{background:linear-gradient(#2563eb,#60a5fa)}
+.tails{background:linear-gradient(#f97316,#facc15)}
+.pocoyo{background:linear-gradient(#2563eb,#1d4ed8)}
+.crash{background:linear-gradient(#f97316,#2563eb)}
+.shadow{background:linear-gradient(#111827,#dc2626)}
+
+.skin-preview.messi .preview-head{background:#ffcc99}
+.skin-preview.messi .preview-body{
+background:linear-gradient(90deg,#74acdf 30%,#fff 30%,#fff 70%,#74acdf 70%)
+}
+
+.skin-preview.lamine .preview-head{background:#c58c59}
+.skin-preview.lamine .preview-body{background:#dc2626}
+
+.skin-preview.cristiano .preview-head{background:#e0ac69}
+.skin-preview.cristiano .preview-body{
+background:linear-gradient(90deg,#cc0000 70%,#006600 70%)
+}
+
+.skin-preview.doraemon .preview-head{
+background:#0099ff;
+border-color:#0077cc
+}
+
+.skin-preview.doraemon .preview-body{
+background:#fff;
+border-color:#0099ff
+}
+
+.skin-preview.sonic .preview-head{
+background:#2563eb;
+border-color:#172554
+}
+
+.skin-preview.sonic .preview-body{
+background:#2563eb;
+border-color:#facc15
+}
+
+.skin-preview.tails .preview-head{
+background:#f97316
+}
+
+.skin-preview.tails .preview-body{
+background:#facc15;
+border-color:#f97316
+}
+
+.skin-preview.pocoyo .preview-head{
+background:#f5cfa0
+}
+
+.skin-preview.pocoyo .preview-body{
+background:#2563eb;
+border-color:#60a5fa
+}
+
+.skin-preview.crash .preview-head{
+background:#c77b45
+}
+
+.skin-preview.crash .preview-body{
+background:#2563eb;
+border-color:#f97316
+}
+
+.skin-preview.shadow .preview-head{
+background:#e0b08a
+}
+
+.skin-preview.shadow .preview-body{
+background:#111827;
+border-color:#dc2626
+}
+
+/* ================= JUEGO ================= */
+
+#screen-game{
+background:#020617
+}
+
+#game{
+position:absolute;
+inset:0;
+overflow:hidden;
+background:
+linear-gradient(to bottom,#020617 0%,#111827 38%,#172033 38%,#172033 100%);
+pointer-events:auto
+}
+
+#game.world2-game{
+background:
+linear-gradient(to bottom,#19051c 0%,#4a174f 38%,#701a4c 38%,#831843 100%)
+}
+
+.sky{
+position:absolute;
+width:60vw;
+height:60vw;
+max-width:600px;
+max-height:600px;
+border-radius:50%;
+left:20%;
+top:-30%;
+background:rgba(239,68,68,.13);
+filter:blur(45px)
+}
+
+.world2-game .sky{
+background:rgba(244,114,182,.2)
+}
+
+/* ================= RING DE BOXEO ================= */
+
+.arena{
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+height:64%;
+perspective:700px;
+z-index:100
+}
+
+.ring-floor{
+position:absolute;
+left:5%;
+right:5%;
+bottom:4%;
+height:62%;
+transform:rotateX(58deg);
+transform-origin:center bottom;
+background:
+repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 2px,transparent 2px 55px),
+repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0 2px,transparent 2px 55px),
+linear-gradient(135deg,#dc2626,#991b1b);
+border:8px solid #e5e7eb;
+box-shadow:0 0 30px rgba(0,0,0,.8)
+}
+
+.world2-game .ring-floor{
+background:
+repeating-linear-gradient(90deg,rgba(255,255,255,.1) 0 2px,transparent 2px 55px),
+repeating-linear-gradient(0deg,rgba(255,255,255,.1) 0 2px,transparent 2px 55px),
+linear-gradient(135deg,#ec4899,#9d174d)
+}
+
+.rope{
+position:absolute;
+left:3%;
+right:3%;
+height:7px;
+border-radius:8px;
+background:#f8fafc;
+box-shadow:0 0 7px rgba(255,255,255,.5);
+z-index:5
+}
+
+.rope.r1{bottom:46%}
+.rope.r2{bottom:54%}
+.rope.r3{bottom:62%}
+
+.ring-post{
+position:absolute;
+bottom:5%;
+width:14px;
+height:72%;
+background:linear-gradient(#facc15,#64748b);
+border-radius:8px;
+z-index:7;
+box-shadow:0 0 10px #000
+}
+
+.ring-post.left{left:3%}
+.ring-post.right{right:3%}
+
+.corner{
+position:absolute;
+width:35px;
+height:35px;
+border-radius:50%;
+background:#dc2626;
+border:4px solid #fff;
+z-index:9
+}
+
+.corner.left{left:1.8%;bottom:59%}
+.corner.right{right:1.8%;bottom:59%}
+
+/* ================= HUD ================= */
+
+#hud{
+position:absolute;
+top:10px;
+left:10px;
+right:10px;
+z-index:1000
+}
+
+.hud-row{
+display:flex;
+justify-content:space-between;
+gap:8px
+}
+
+.hp-box{
+width:38%;
+padding:7px;
+border-radius:10px;
+background:rgba(2,6,23,.9);
+border:2px solid #dc2626
+}
+
+.hp-name{
+display:flex;
+justify-content:space-between;
+font-size:8px;
+font-weight:1000;
+margin-bottom:4px
+}
+
+.hp-bg{
+height:13px;
+overflow:hidden;
+border-radius:5px;
+background:#334155
+}
+
+.hp-fill{
+height:100%;
+background:#22c55e;
+transition:width .2s
+}
+
+.enemy-fill{
+background:#ef4444
+}
+
+#center{
+text-align:center;
+min-width:80px
+}
+
+#level{
+display:inline-block;
+padding:6px 10px;
+border-radius:15px;
+background:#0f172a;
+border:2px solid #facc15;
+color:#facc15;
+font-size:10px;
+font-weight:1000
+}
+
+.world2-game #level{
+border-color:#f9a8d4;
+color:#f9a8d4
+}
+
+#combo{
+margin-top:5px;
+color:#facc15;
+font-size:17px;
+font-weight:1000
+}
+
+#energy-wrap{
+position:absolute;
+left:10%;
+right:10%;
+top:82px;
+height:11px;
+border-radius:8px;
+background:#111827;
+border:2px solid #facc15;
+overflow:hidden
+}
+
+#energy{
+width:0%;
+height:100%;
+background:linear-gradient(90deg,#facc15,#f97316,#ef4444)
+}
+
+#energy-text{
+position:absolute;
+top:95px;
+width:100%;
+text-align:center;
+font-size:8px;
+color:#facc15;
+font-weight:1000
+}
+
+/* ================= LUCHADORES ================= */
+
+.fighter{
+position:absolute;
+bottom:31%;
+left:16%;
+width:74px;
+height:150px;
+z-index:500;
+transform-origin:center bottom
+}
+
+.body{
+position:absolute;
+left:11px;
+top:42px;
+width:52px;
+height:65px;
+border-radius:13px;
+border:2px solid #dc2626;
+background:linear-gradient(135deg,#fff,#cbd5e1)
+}
+
+.head{
+position:absolute;
+left:17px;
+top:0;
+width:40px;
+height:43px;
+border-radius:50%;
+border:2px solid #3f2415;
+background:#c98c5b;
+z-index:4
+}
+
+.eye{
+position:absolute;
+width:5px;
+height:7px;
+border-radius:50%;
+background:#111;
+top:17px
+}
+
+.eye.left{left:10px}
+.eye.right{right:10px}
+
+.legs{
+position:absolute;
+left:10px;
+top:103px;
+width:54px;
+height:45px;
+border-radius:8px;
+background:#64748b;
+border:2px solid #dc2626
+}
+
+.arm{
+position:absolute;
+width:40px;
+height:13px;
+top:57px;
+border-radius:10px;
+background:#cbd5e1;
+border:2px solid #dc2626
+}
+
+.arm.back{
+left:-13px;
+transform:rotate(12deg)
+}
+
+.arm.front{
+right:-21px;
+transform:rotate(-8deg);
+transform-origin:left center
+}
+
+.glove{
+position:absolute;
+right:-12px;
+top:-7px;
+width:27px;
+height:27px;
+border-radius:50%;
+background:#dc2626;
+border:2px solid #7f1d1d;
+box-shadow:0 0 8px #dc2626
+}
+
+#enemy{
+position:absolute;
+right:17%;
+bottom:31%;
+width:78px;
+height:155px;
+z-index:480;
+transform:scaleX(-1)
+}
+
+.enemy-body{
+background:linear-gradient(135deg,#475569,#111827);
+border-color:#ef4444
+}
+
+.enemy-head{background:#75432b}
+.enemy-legs{
+background:#111827;
+border-color:#ef4444
+}
+
+/* BOSS */
+
+.boss-intimidating{
+animation:bossAura 1.2s infinite alternate;
+filter:drop-shadow(0 0 25px rgba(239,68,68,.9)) contrast(1.3)
+}
+
+@keyframes bossAura{
+0%{
+transform:scaleX(-1) translateY(0) scale(1);
+filter:drop-shadow(0 0 15px rgba(239,68,68,.6)) brightness(1)
+}
+100%{
+transform:scaleX(-1) translateY(-5px) scale(1.06);
+filter:drop-shadow(0 0 35px rgba(220,38,38,1)) brightness(1.2)
+}
+}
+
+.pocket{
+position:absolute;
+left:50%;
+bottom:6px;
+transform:translateX(-50%);
+width:26px;
+height:15px;
+background:#fff;
+border:2px solid #333;
+border-bottom-left-radius:14px;
+border-bottom-right-radius:14px;
+display:none;
+z-index:5
+}
+
+.bell{
+position:absolute;
+left:50%;
+top:-5px;
+transform:translateX(-50%);
+width:10px;
+height:10px;
+background:#ffcc00;
+border:1px solid #000;
+border-radius:50%;
+display:none;
+z-index:7
+}
+
+/* ================= TAILS GUANTES / HERRAMIENTAS ================= */
+
+.tools{
+position:absolute;
+left:-25px;
+top:45px;
+width:125px;
+height:65px;
+display:none;
+z-index:3
+}
+
+.tools .tool{
+position:absolute;
+width:42px;
+height:10px;
+border-radius:8px;
+background:#94a3b8;
+border:3px solid #334155;
+box-shadow:0 0 7px #000
+}
+
+.tools .tool:after{
+content:"";
+position:absolute;
+width:15px;
+height:15px;
+border-radius:50%;
+right:-9px;
+top:-5px;
+background:#facc15;
+border:2px solid #92400e
+}
+
+.tools .tool.one{
+left:3px;
+top:8px;
+transform:rotate(-35deg)
+}
+
+.tools .tool.two{
+left:3px;
+top:40px;
+transform:rotate(35deg)
+}
+
+.tails-equipped .tools{
+display:block
+}
+
+/* ================= ANIMACIONES ================= */
+
+@keyframes punch{
+0%{transform:translateX(0)}
+35%{transform:translateX(-8px)}
+60%{transform:translateX(65px) scaleX(1.12)}
+100%{transform:translateX(0)}
+}
+
+@keyframes heavy{
+0%{transform:translateX(0)}
+35%{transform:translateX(-14px) rotate(-5deg)}
+65%{transform:translateX(80px) rotate(4deg) scale(1.05)}
+100%{transform:translateX(0)}
+}
+
+@keyframes jump{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-105px)}
+}
+
+@keyframes hit{
+0%{transform:scale(1)}
+40%{transform:scale(.88) rotate(-5deg);filter:brightness(2.5)}
+100%{transform:scale(1)}
+}
+
+@keyframes dodge{
+0%{transform:translateX(0)}
+50%{transform:translateX(-65px) rotate(-12deg)}
+100%{transform:translateX(0)}
+}
+
+.punching{animation:punch .23s}
+.heavying{animation:heavy .34s}
+.jumping{animation:jump .42s}
+.hit{animation:hit .2s}
+.dodging{animation:dodge .28s}
+
+/* ================= EFECTOS ================= */
+
+#effects{
+position:absolute;
+inset:0;
+z-index:1500;
+pointer-events:none
+}
+
+.damage{
+position:absolute;
+font-size:23px;
+font-weight:1000;
+text-shadow:2px 2px #000;
+animation:damage .8s forwards
+}
+
+@keyframes damage{
+0%{opacity:1;transform:translateY(0) scale(.8)}
+30%{transform:translateY(-18px) scale(1.2)}
+100%{opacity:0;transform:translateY(-70px)}
+}
+
+.particle{
+position:absolute;
+width:7px;
+height:7px;
+border-radius:50%;
+background:#facc15;
+animation:particle .55s forwards
+}
+
+@keyframes particle{
+0%{opacity:1}
+100%{
+opacity:0;
+transform:translate(var(--x),var(--y)) scale(.1)
+}
+}
+
+#flash{
+position:absolute;
+inset:0;
+z-index:1800;
+background:#fff;
+opacity:0;
+pointer-events:none
+}
+
+#flash.on{
+animation:flash .12s
+}
+
+@keyframes flash{
+0%{opacity:.7}
+100%{opacity:0}
+}
+
+#announcer{
+position:absolute;
+z-index:1700;
+left:50%;
+top:45%;
+width:100%;
+transform:translate(-50%,-50%);
+text-align:center;
+font-size:clamp(25px,7vw,48px);
+font-weight:1000;
+font-style:italic;
+color:#facc15;
+text-shadow:0 5px #000,0 0 20px #dc2626;
+opacity:0;
+pointer-events:none
+}
+
+#announcer.show{
+animation:announce .9s forwards
+}
+
+@keyframes announce{
+0%{
+opacity:0;
+transform:translate(-50%,-50%) scale(.2)
+}
+25%{
+opacity:1;
+transform:translate(-50%,-50%) scale(1.15)
+}
+70%{opacity:1}
+100%{
+opacity:0;
+transform:translate(-50%,-50%) scale(1.05)
+}
+}
+
+/* ================= CONTROLES ================= */
+
+#controls{
+position:absolute;
+left:0;
+right:0;
+bottom:calc(13px + env(safe-area-inset-bottom));
+z-index:2000;
+display:flex;
+justify-content:space-between;
+padding:0 15px;
+pointer-events:auto
+}
+
+.control-side{
+display:flex;
+gap:8px;
+align-items:flex-end
+}
+
+.ctrl{
+width:56px;
+height:56px;
+border-radius:50%;
+border:3px solid rgba(255,255,255,.55);
+background:rgba(15,23,42,.85);
+color:#fff;
+font-size:19px;
+font-weight:1000;
+box-shadow:0 8px 20px #000
+}
+
+.ctrl:active{
+transform:scale(.88)
+}
+
+.ctrl.attack{
+width:68px;
+height:68px;
+background:rgba(220,38,38,.85);
+border-color:#facc15
+}
+
+.ctrl.heavy{background:rgba(124,58,237,.85)}
+.ctrl.block{background:rgba(37,99,235,.85)}
+.ctrl.dodge{background:rgba(5,150,105,.85)}
+
+.ctrl.super{
+width:70px;
+height:70px;
+background:rgba(249,115,22,.9);
+border-color:#facc15;
+font-size:24px
+}
+
+.ctrl.disabled{
+opacity:.35
+}
+
+/* ================= RESULTADO ================= */
+
+#result{
+position:absolute;
+inset:0;
+z-index:4000;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.9);
+pointer-events:none
+}
+
+#result.show{
+display:flex;
+pointer-events:auto
+}
+
+.result-card{
+width:min(90%,400px);
+text-align:center;
+padding:28px;
+border-radius:24px;
+background:linear-gradient(145deg,#111827,#020617);
+border:2px solid #facc15;
+box-shadow:0 20px 80px #000
+}
+
+.result-icon{
+font-size:55px
+}
+
+.result-card h1{
+color:#facc15
+}
+
+.result-card p{
+color:#cbd5e1;
+font-weight:700
+}
+
+.result-buttons{
+display:flex;
+gap:8px
+}
+
+.result-buttons button{
+flex:1;
+padding:13px;
+border:0;
+border-radius:11px;
+background:#dc2626;
+color:white;
+font-weight:900
+}
+
+.result-buttons button:last-child{
+background:#334155
+}
+
+/* ================= MEJORAS ================= */
+
+.upgradeBox{
+margin:10px 0;
+padding:14px;
+border-radius:14px;
+background:#0f172a;
+border:1px solid #334155;
+font-weight:900
+}
+
+.upgradeBox p{
+font-size:12px;
+color:#cbd5e1
+}
+
+.upgradeBox button{
+display:block;
+width:100%;
+margin-top:9px;
+padding:10px;
+border:0;
+border-radius:9px;
+background:#dc2626;
+color:#fff;
+font-weight:900
+}
+
+/* ================= MÓVIL ================= */
+
+@media(max-width:600px){
+
+.fighter{
+left:13%;
+transform:scale(.92)
+}
+
+#enemy{
+right:13%;
+transform:scaleX(-1) scale(.92)
+}
+
+.hp-box{
+width:40%
+}
+
+.ctrl{
+width:51px;
+height:51px
+}
+
+.ctrl.attack{
+width:63px;
+height:63px
+}
+
+.ctrl.super{
+width:65px;
+height:65px
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= MENÚ ================= -->
+
+<div id="screen-menu" class="screen active">
+
+<div class="menu-bg">
+<div class="bg-light one"></div>
+<div class="bg-light two"></div>
+</div>
+
+<div class="logo-small">BRAWL • SEVILLA</div>
+<div class="logo">ULTIMATE<br>FIGHT</div>
+<div class="logo-sub">MUNDO 1 • 1-100 • MUNDO 2 • 101-250</div>
+
+<div class="menu-card">
+
+<div class="menu-stats">
+<div class="menu-stat">
+<b id="menu-level">1</b>
+<span>MUNDO 1</span>
+</div>
+
+<div class="menu-stat">
+<b id="menu-coins">0</b>
+<span>MONEDAS</span>
+</div>
+
+<div class="menu-stat">
+<b id="menu-best">0</b>
+<span>RÉCORD</span>
+</div>
+</div>
+
+<button class="menu-btn" onclick="startCampaign()">⚡ JUGAR CAMPAÑA</button>
+
+<button class="menu-btn purple" onclick="start1vs1()">👥 MODO 1VS1</button>
+
+<button class="menu-btn" onclick="openShop()">🛒 TIENDA DE SKINS</button>
+
+<button class="menu-btn orange" onclick="openMissions()">🎯 MISIONES</button>
+
+<button class="menu-btn blue" onclick="startTraining()">🥊 ENTRENAMIENTO BOSS</button>
+
+<button class="menu-btn green" onclick="openUpgrades()">⬆️ MEJORAR BRAWLER</button>
+
+<button id="world2-button" class="menu-btn pink" onclick="goWorld2()">
+🔒 IR AL MUNDO 2
+</button>
+
+</div>
+</div>
+
+<!-- ================= MUNDO 2 ================= -->
+
+<div id="screen-world2" class="screen">
+
+<div class="world2-content">
+
+<div class="world2-title">🌸 MUNDO 2</div>
+
+<p>🔥 NIVELES 101 → 250</p>
+<p>Un nuevo mundo. Un nuevo ring. Jefes mucho más fuertes.</p>
+
+<button class="menu-btn pink" onclick="startWorld2()">
+⚡ JUGAR MUNDO 2
+</button>
+
+<button class="menu-btn dark" onclick="returnFromWorld2()">
+🏠 VOLVER AL MENÚ
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= TIENDA ================= -->
+
+<div id="shop-screen" class="overlay">
+
+<div class="panel">
+
+<h2>🛒 TIENDA DE SKINS</h2>
+
+<div class="shop-coins">
+🪙 <span id="shop-coins">0</span> MONEDAS
+</div>
+
+<div class="shop-scroll-container">
+<div class="shop-grid" id="shop-grid"></div>
+</div>
+
+<button class="close" onclick="closePanels()">CERRAR</button>
+
+</div>
+</div>
+
+<!-- ================= MEJORAS ================= -->
+
+<div id="upgrade-screen" class="overlay">
+
+<div class="panel">
+
+<h2>⬆️ MEJORAS</h2>
+
+<div class="upgradeBox">
+❤️ VIDA — <b id="health-level">NV 1</b>
+<button onclick="buyUpgrade('health')">
+MEJORAR <span id="health-cost">100</span> 🪙
+</button>
+</div>
+
+<div class="upgradeBox">
+👊 ATAQUE — <b id="attack-level">NV 1</b>
+<button onclick="buyUpgrade('attack')">
+MEJORAR <span id="attack-cost">100</span> 🪙
+</button>
+</div>
+
+<div class="upgradeBox">
+🛡️ DEFENSA — <b id="defense-level">NV 1</b>
+<button onclick="buyUpgrade('defense')">
+MEJORAR <span id="defense-cost">150</span> 🪙
+</button>
+</div>
+
+<div class="upgradeBox">
+🔥 SÚPER — <b id="super-level">NV 1</b>
+<button onclick="buyUpgrade('super')">
+MEJORAR <span id="super-cost">200</span> 🪙
+</button>
+</div>
+
+<button class="close" onclick="closePanels()">CERRAR</button>
+
+</div>
+</div>
+
+<!-- ================= MISIONES ================= -->
+
+<div id="mission-screen" class="overlay">
+
+<div class="panel">
+
+<h2>🎯 MISIONES</h2>
+
+<div id="missions-list"></div>
+
+<button class="close" onclick="closePanels()">CERRAR</button>
+
+</div>
+</div>
+
+<!-- ================= JUEGO ================= -->
+
+<div id="screen-game" class="screen">
+
+<div id="game">
+
+<div class="sky"></div>
+
+<!-- Ring -->
+<div class="arena">
+
+<div class="ring-floor"></div>
+
+<div class="rope r1"></div>
+<div class="rope r2"></div>
+<div class="rope r3"></div>
+
+<div class="ring-post left"></div>
+<div class="ring-post right"></div>
+
+<div class="corner left"></div>
+<div class="corner right"></div>
+
+</div>
+
+<!-- HUD -->
+
+<div id="hud">
+
+<div class="hud-row">
+
+<div class="hp-box">
+
+<div class="hp-name">
+<span id="p1-title">⚡ TÚ</span>
+<span id="player-hp-text">2500</span>
+</div>
+
+<div class="hp-bg">
+<div id="player-hp" class="hp-fill"></div>
+</div>
+
+</div>
+
+<div id="center">
+
+<div id="level">NIVEL 1</div>
+
+<div id="combo"></div>
+
+</div>
+
+<div class="hp-box">
+
+<div class="hp-name">
+<span id="enemy-name">RIVAL</span>
+<span id="enemy-hp-text">1000</span>
+</div>
+
+<div class="hp-bg">
+<div id="enemy-hp" class="hp-fill enemy-fill"></div>
+</div>
+
+</div>
+
+</div>
+
+<div id="energy-wrap">
+<div id="energy"></div>
+</div>
+
+<div id="energy-text">
+SÚPER 0%
+</div>
+
+</div>
+
+<!-- PLAYER -->
+
+<div id="player" class="fighter">
+
+<div class="tools">
+<div class="tool one"></div>
+<div class="tool two"></div>
+</div>
+
+<div class="head">
+<div class="eye left"></div>
+<div class="eye right"></div>
+</div>
+
+<div class="body">
+
+<div class="pocket"></div>
+<div class="bell"></div>
+
+</div>
+
+<div class="arm back"></div>
+
+<div class="arm front">
+<div class="glove"></div>
+</div>
+
+<div class="legs"></div>
+
+</div>
+
+<!-- ENEMY -->
+
+<div id="enemy">
+
+<div class="head enemy-head">
+<div class="eye left"></div>
+<div class="eye right"></div>
+</div>
+
+<div class="body enemy-body"></div>
+
+<div class="arm back"></div>
+
+<div class="arm front"></div>
+
+<div class="legs enemy-legs"></div>
+
+</div>
+
+<div id="effects"></div>
+
+<div id="flash"></div>
+
+<div id="announcer"></div>
+
+<!-- CONTROLES -->
+
+<div id="controls">
+
+<div class="control-side">
+
+<button class="ctrl" onclick="movePlayer(-1)">◀️</button>
+
+<button class="ctrl" onclick="movePlayer(1)">▶️</button>
+
+<button class="ctrl" onclick="jump()">🦘</button>
+
+</div>
+
+<div class="control-side">
+
+<button
+class="ctrl block"
+onpointerdown="startBlock(event)"
+onpointerup="stopBlock(event)"
+onpointercancel="stopBlock(event)"
+ontouchstart="startBlock(event)"
+ontouchend="stopBlock(event)">
+🛡️
+</button>
+
+<button class="ctrl dodge" onclick="dodge()">💨</button>
+
+<button class="ctrl heavy" onclick="heavyAttack()">💥</button>
+
+<button class="ctrl attack" onclick="attack()">👊</button>
+
+<button id="super-btn" class="ctrl super" onclick="superAttack()">🔥</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RESULTADO -->
+
+<div id="result">
+
+<div class="result-card">
+
+<div id="result-icon" class="result-icon">🏆</div>
+
+<h1 id="result-title">¡VICTORIA!</h1>
+
+<p id="result-text"></p>
+
+<div class="result-buttons">
+
+<button id="continue-button" onclick="nextLevel()">
+➡️ CONTINUAR
+</button>
+
+<button onclick="returnMenu()">
+🏠 MENÚ
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   GUARDADO
+========================================================= */
+
+const SAVE_KEY="sevilla_brawl_ultimate_complete_v10";
+
+let save={
+world1Level:1,
+world2Level:101,
+coins:0,
+best:0,
+
+world2Unlocked:false,
+
+statsData:{
+matchesWon:0,
+bossesBeaten:0,
+supersUsed:0
+},
+
+missions:{
+m1:false,
+m2:false,
+m3:false
+},
+
+upgrades:{
+health:1,
+attack:1,
+defense:1,
+super:1
+},
+
+skins:{
+classic:true,
+boxer:false,
+clown:false,
+bat:false,
+robot:false,
+gold:false,
+fire:false,
+electric:false,
+diamond:false,
+king:false,
+messi:false,
+lamine:false,
+cristiano:false,
+doraemon:false,
+sonic:false,
+tails:false,
+pocoyo:false,
+crash:false,
+shadow:false
+},
+
+selectedSkin:"classic"
+};
+
+function loadSave(){
+
+try{
+
+const raw=localStorage.getItem(SAVE_KEY);
+
+if(raw){
+
+const p=JSON.parse(raw);
+
+save={
+...save,
+...p,
+statsData:{...save.statsData,...(p.statsData||{})},
+missions:{...save.missions,...(p.missions||{})},
+upgrades:{...save.upgrades,...(p.upgrades||{})},
+skins:{...save.skins,...(p.skins||{})}
+};
+
+}
+
+}catch(e){}
+
+updateMenu();
+}
+
+/* MIGRACIÓN DE GUARDADOS ANTIGUOS */
+
+function migrateOldSave(){
+
+try{
+
+const old=localStorage.getItem("sevilla_brawl_ultimate_shop_v6");
+
+if(old && !localStorage.getItem(SAVE_KEY)){
+
+const p=JSON.parse(old);
+
+save.coins=p.coins||0;
+save.best=p.best||0;
+save.world1Level=Math.min(100,Math.max(1,p.level||1));
+save.world2Level=101;
+
+if(p.statsData)save.statsData={...save.statsData,...p.statsData};
+if(p.missions)save.missions={...save.missions,...p.missions};
+if(p.upgrades)save.upgrades={...save.upgrades,...p.upgrades};
+if(p.skins)save.skins={...save.skins,...p.skins};
+if(p.selectedSkin)save.selectedSkin=p.selectedSkin;
+
+save.world2Unlocked=false;
+
+saveGame();
+
+}
+
+}catch(e){}
+
+}
+
+function saveGame(){
+
+try{
+localStorage.setItem(SAVE_KEY,JSON.stringify(save));
+}catch(e){}
+
+}
+
+/* =========================================================
+   SKINS
+========================================================= */
+
+const skinData={
+
+classic:{
+name:"🥊 CLÁSICO",
+price:0,
+class:"clasic"
+},
+
+boxer:{
+name:"🥊 CAMPEÓN",
+price:250,
+class:"boxer"
+},
+
+clown:{
+name:"🃏 PAYASO CAÓTICO",
+price:500,
+class:"clown"
+},
+
+bat:{
+name:"🦇 HÉROE NOCTURNO",
+price:750,
+class:"bat"
+},
+
+robot:{
+name:"🤖 GATO ROBOT",
+price:900,
+class:"robot"
+},
+
+gold:{
+name:"👑 CAMPEÓN DORADO",
+price:1200,
+class:"gold"
+},
+
+fire:{
+name:"🔥 INFERNAL",
+price:1500,
+class:"fire"
+},
+
+electric:{
+name:"⚡ ELÉCTRICO",
+price:2000,
+class:"electric"
+},
+
+diamond:{
+name:"💎 DIAMANTE",
+price:3000,
+class:"diamond"
+},
+
+king:{
+name:"👑 REY DEL RING",
+price:5000,
+class:"king"
+},
+
+messi:{
+name:"🇦🇷 MESSI",
+price:6000,
+class:"messi"
+},
+
+lamine:{
+name:"🇪🇸 LAMINE YAMAL",
+price:6000,
+class:"lamine"
+},
+
+cristiano:{
+name:"🇵🇹 CRISTIANO",
+price:6000,
+class:"cristiano"
+},
+
+doraemon:{
+name:"🔔 DORAEMON",
+price:7500,
+class:"doraemon"
+},
+
+sonic:{
+name:"💙 SONIC",
+price:8000,
+class:"sonic"
+},
+
+tails:{
+name:"🦊 TAILS + GUANTES",
+price:8500,
+class:"tails"
+},
+
+pocoyo:{
+name:"🔵 POCOYÓ",
+price:7000,
+class:"pocoyo"
+},
+
+crash:{
+name:"🧡 CRASH BANDICOOT",
+price:9000,
+class:"crash"
+},
+
+shadow:{
+name:"🖤 SHADOW",
+price:10000,
+class:"shadow"
+}
+
+};
+
+function openShop(){
+
+renderShop();
+
+document.getElementById("shop-screen").classList.add("show");
+
+}
+
+function renderShop(){
+
+document.getElementById("shop-coins").textContent=save.coins;
+
+const grid=document.getElementById("shop-grid");
+
+grid.innerHTML="";
+
+Object.entries(skinData).forEach(([id,data])=>{
+
+const owned=save.skins[id];
+const equipped=save.selectedSkin===id;
+
+const card=document.createElement("div");
+
+card.className="skin-card"+(equipped?" equipped":"");
+
+let buttonText="";
+let buttonClass="";
+
+if(equipped){
+
+buttonText="✅ EQUIPADA";
+buttonClass="equip";
+
+}else if(owned){
+
+buttonText="EQUIPAR";
+buttonClass="equip";
+
+}else{
+
+buttonText=data.price+" 🪙";
+
+}
+
+card.innerHTML=`
+
+<div class="skin-preview ${data.class}">
+
+<div class="preview-head">
+<div class="preview-eye left"></div>
+<div class="preview-eye right"></div>
+</div>
+
+<div class="preview-body"></div>
+
+<div class="preview-legs"></div>
+
+</div>
+
+<b>${data.name}</b>
+
+<div class="skin-price">
+${data.price===0?"GRATIS":data.price+" 🪙"}
+</div>
+
+<button class="${buttonClass}"
+onclick="skinAction('${id}')">
+${buttonText}
+</button>
+
+`;
+
+grid.appendChild(card);
+
+});
+
+}
+
+function skinAction(id){
+
+const data=skinData[id];
+
+if(save.skins[id]){
+
+save.selectedSkin=id;
+
+saveGame();
+
+applySkin();
+
+renderShop();
+
+return;
+
+}
+
+if(save.coins<data.price){
+
+showAnnouncer("❌ ¡NO TIENES MONEDAS!");
+
+return;
+
+}
+
+save.coins-=data.price;
+
+save.skins[id]=true;
+
+save.selectedSkin=id;
+
+saveGame();
+
+applySkin();
+
+updateMenu();
+
+renderShop();
+
+showAnnouncer("✨ ¡SKIN DESBLOQUEADA!");
+
+}
+
+/* =========================================================
+   REFERENCIAS
+========================================================= */
+
+const menu=document.getElementById("screen-menu");
+const world2Screen=document.getElementById("screen-world2");
+const gameScreen=document.getElementById("screen-game");
+
+const game=document.getElementById("game");
+
+const player=document.getElementById("player");
+const enemy=document.getElementById("enemy");
+
+const playerHpBar=document.getElementById("player-hp");
+const enemyHpBar=document.getElementById("enemy-hp");
+
+const playerHpText=document.getElementById("player-hp-text");
+const enemyHpText=document.getElementById("enemy-hp-text");
+
+const levelEl=document.getElementById("level");
+const comboEl=document.getElementById("combo");
+
+const energyEl=document.getElementById("energy");
+const energyText=document.getElementById("energy-text");
+
+const effects=document.getElementById("effects");
+const flash=document.getElementById("flash");
+const announcer=document.getElementById("announcer");
+
+const result=document.getElementById("result");
+const resultIcon=document.getElementById("result-icon");
+const resultTitle=document.getElementById("result-title");
+const resultText=document.getElementById("result-text");
+const continueButton=document.getElementById("continue-button");
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let mode="campaign";
+let world=1;
+let level=1;
+
+let playerHP=2500;
+let maxPlayerHP=2500;
+
+let enemyHP=1000;
+let maxEnemyHP=1000;
+
+let energy=0;
+let combo=0;
+let comboTimer=null;
+
+let playerX=16;
+
+let attacking=false;
+let blocking=false;
+let dodgingNow=false;
+let jumpingNow=false;
+let gameOver=false;
+
+let enemyTimer=null;
+let enemyThink=null;
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+let audioContext=null;
+
+function initAudio(){
+
+if(audioContext)return;
+
+try{
+
+audioContext=new(window.AudioContext||window.webkitAudioContext)();
+
+}catch(e){}
+
+}
+
+function sound(type){
+
+if(!audioContext)return;
+
+try{
+
+if(audioContext.state==="suspended")audioContext.resume();
+
+const osc=audioContext.createOscillator();
+const gain=audioContext.createGain();
+
+osc.connect(gain);
+gain.connect(audioContext.destination);
+
+let f=150;
+let d=.08;
+
+if(type==="hit")f=90;
+if(type==="heavy"){
+f=60;
+d=.13
+}
+if(type==="super"){
+f=280;
+d=.35
+}
+if(type==="win"){
+f=650;
+d=.45
+}
+if(type==="lose"){
+f=80;
+d=.5
+}
+
+osc.type=type==="super"?"triangle":"square";
+osc.frequency.value=f;
+
+gain.gain.setValueAtTime(.001,audioContext.currentTime);
+
+gain.gain.exponentialRampToValueAtTime(
+.12,
+audioContext.currentTime+.01
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.001,
+audioContext.currentTime+d
+);
+
+osc.start();
+
+osc.stop(audioContext.currentTime+d+.02);
+
+}catch(e){}
+
+}
+
+/* =========================================================
+   MENÚ
+========================================================= */
+
+function updateMenu(){
+
+let displayedLevel=save.world1Level;
+
+document.getElementById("menu-level").textContent=
+displayedLevel;
+
+document.getElementById("menu-coins").textContent=
+save.coins;
+
+document.getElementById("menu-best").textContent=
+save.best;
+
+const button=document.getElementById("world2-button");
+
+if(save.world2Unlocked){
+
+button.textContent="🌸 IR AL MUNDO 2";
+button.classList.remove("locked");
+
+}else{
+
+button.textContent="🔒 IR AL MUNDO 2 — COMPLETA NIVEL 100";
+button.classList.add("locked");
+
+}
+
+}
+
+/* =========================================================
+   CAMPAÑA
+========================================================= */
+
+function startCampaign(){
+
+initAudio();
+
+mode="campaign";
+world=1;
+
+/*
+Si el jugador ya está en mundo 2, JUGAR CAMPAÑA
+SIEMPRE vuelve al mundo 1.
+Y en mundo 1 no permite seguir más allá del 100.
+*/
+
+level=Math.max(
+1,
+Math.min(100,save.world1Level)
+);
+
+menu.classList.remove("active");
+world2Screen.classList.remove("active");
+gameScreen.classList.add("active");
+
+startLevel();
+
+}
+
+function startWorld2(){
+
+if(!save.world2Unlocked){
+
+showAnnouncer("🔒 ¡DERROTA EL BOSS DEL NIVEL 100!");
+
+return;
+
+}
+
+initAudio();
+
+mode="campaign";
+world=2;
+
+level=Math.max(
+101,
+Math.min(250,save.world2Level)
+);
+
+world2Screen.classList.remove("active");
+menu.classList.remove("active");
+gameScreen.classList.add("active");
+
+startLevel();
+
+}
+
+function goWorld2(){
+
+if(!save.world2Unlocked){
+
+showAnnouncer("🔒 ¡LLEGA AL NIVEL 100 Y DERROTA AL BOSS!");
+
+return;
+
+}
+
+menu.classList.remove("active");
+world2Screen.classList.add("active");
+
+}
+
+function returnFromWorld2(){
+
+world2Screen.classList.remove("active");
+menu.classList.add("active");
+
+updateMenu();
+
+}
+
+function startTraining(){
+
+initAudio();
+
+mode="training";
+world=1;
+level=100;
+
+menu.classList.remove("active");
+gameScreen.classList.add("active");
+
+startLevel();
+
+}
+
+function start1vs1(){
+
+initAudio();
+
+mode="1vs1";
+world=1;
+level=1;
+
+menu.classList.remove("active");
+gameScreen.classList.add("active");
+
+startLevel();
+
+}
+
+function returnMenu(){
+
+stopEnemyAI();
+
+result.classList.remove("show");
+
+gameScreen.classList.remove("active");
+world2Screen.classList.remove("active");
+
+menu.classList.add("active");
+
+updateMenu();
+
+}
+
+/* =========================================================
+   PANELES
+========================================================= */
+
+function closePanels(){
+
+document.querySelectorAll(".overlay")
+.forEach(x=>x.classList.remove("show"));
+
+}
+
+function openUpgrades(){
+
+updateUpgradeUI();
+
+document.getElementById("upgrade-screen")
+.classList.add("show");
+
+}
+
+/* =========================================================
+   ESTADÍSTICAS
+========================================================= */
+
+function getPlayerStats(){
+
+return{
+
+health:2500+(save.upgrades.health-1)*350,
+
+attack:850+(save.upgrades.attack-1)*85
+
+};
+
+}
+
+function getEnemyStats(lvl){
+
+/*
+MUNDO 1
+*/
+
+if(world===1){
+
+if(lvl===100)
+return{
+hp:150000,
+damage:50,
+boss:true
+};
+
+if(lvl%10===0)
+return{
+hp:Math.round(6500+lvl*450),
+damage:1000+lvl*9,
+boss:true
+};
+
+return{
+hp:lvl<60
+?1000+(lvl-1)*180
+:11500+(lvl-60)*850,
+
+damage:700+Math.floor(lvl*7),
+
+boss:false
+};
+
+}
+
+/*
+MUNDO 2
+101-250
+
+Cada 50 niveles hay un boss.
+El 250 es el boss final.
+*/
+
+if(lvl===250){
+
+return{
+hp:600000,
+damage:850,
+boss:true,
+final:true
+};
+
+}
+
+if(lvl%50===0){
+
+return{
+hp:250000+lvl*500,
+damage:500+lvl*2,
+boss:true
+};
+
+}
+
+return{
+hp:17000+(lvl-101)*2600,
+damage:1200+Math.floor((lvl-100)*5),
+boss:false
+};
+
+}
+
+/* =========================================================
+   NIVEL
+========================================================= */
+
+function startLevel(){
+
+stopEnemyAI();
+
+gameOver=false;
+
+attacking=false;
+blocking=false;
+dodgingNow=false;
+jumpingNow=false;
+
+combo=0;
+energy=0;
+playerX=16;
+
+player.style.left="16%";
+enemy.style.right="17%";
+
+player.classList.remove("tails-equipped");
+
+const stats=getPlayerStats();
+
+maxPlayerHP=stats.health;
+playerHP=maxPlayerHP;
+
+let e;
+
+if(mode==="training"){
+
+e={
+hp:150000,
+damage:50,
+boss:true
+};
+
+}else if(mode==="1vs1"){
+
+e={
+hp:2500,
+damage:250,
+boss:false
+};
+
+}else{
+
+e=getEnemyStats(level);
+
+}
+
+maxEnemyHP=e.hp;
+enemyHP=e.hp;
+
+enemy.style.display="block";
+
+game.classList.toggle(
+"world2-game",
+world===2
+);
+
+if(world===1){
+
+document.getElementById("p1-title").textContent=
+mode==="1vs1"?"⚡ JUGADOR 1":"⚡ TÚ";
+
+if(mode==="1vs1"){
+
+document.getElementById("enemy-name").textContent=
+"⚡ JUGADOR 2";
+
+levelEl.textContent="MODO 1VS1";
+
+}else{
+
+document.getElementById("enemy-name").textContent=
+e.boss
+?(level===100
+?"🔥 BOSS FINAL"
+:"👑 JEFE NIVEL "+level)
+:"RIVAL NIVEL "+level;
+
+levelEl.textContent=
+mode==="training"
+?"ENTRENAMIENTO BOSS"
+:"NIVEL "+level;
+
+}
+
+}else{
+
+document.getElementById("p1-title").textContent="🌸 TÚ";
+
+document.getElementById("enemy-name").textContent=
+e.final
+?"👑 BOSS FINAL MUNDO 2"
+:e.boss
+?"👑 JEFE MUNDO 2"
+:"RIVAL MUNDO 2";
+
+levelEl.textContent=
+"NIVEL "+level;
+
+}
+
+if(
+mode!=="1vs1" &&
+e.boss
+){
+
+enemy.classList.add("boss-intimidating");
+
+}else{
+
+enemy.classList.remove("boss-intimidating");
+
+}
+
+applySkin();
+
+updateUI();
+
+let intro;
+
+if(mode==="1vs1"){
+
+intro="👥 ¡DUELO 1VS1!";
+
+}else if(mode==="training"){
+
+intro="🥊 ¡ENTRENAMIENTO BOSS!";
+
+}else if(world===2 && level===250){
+
+intro="🌸🔥 ¡BOSS FINAL MUNDO 2!";
+
+}else if(world===2 && e.boss){
+
+intro="🌸👑 ¡JEFE DEL MUNDO 2!";
+
+}else if(level===100){
+
+intro="🔥 ¡BOSS FINAL DEL MUNDO 1!";
+
+}else if(e.boss){
+
+intro="👑 ¡JEFE!";
+
+}else{
+
+intro=
+world===2
+?"🌸 ¡NIVEL "+level+"!"
+:"⚡ ¡NIVEL "+level+"!";
+
+}
+
+showAnnouncer(intro);
+
+if(mode!=="1vs1"){
+
+startEnemyAI();
+
+}
+
+}
+
+/* =========================================================
+   SKIN
+========================================================= */
+
+function applySkin(){
+
+const id=save.selectedSkin;
+
+const body=player.querySelector(".body");
+const head=player.querySelector(".head");
+const legs=player.querySelector(".legs");
+const glove=player.querySelector(".glove");
+const pocket=player.querySelector(".pocket");
+const bell=player.querySelector(".bell");
+
+body.style.background="";
+body.style.borderColor="";
+head.style.background="";
+head.style.borderColor="";
+legs.style.background="";
+legs.style.borderColor="";
+glove.style.background="";
+glove.style.boxShadow="";
+
+pocket.style.display="none";
+bell.style.display="none";
+
+player.classList.remove("tails-equipped");
+
+/* CLÁSICO */
+
+if(id==="classic"){
+
+body.style.background=
+"linear-gradient(135deg,#fff,#cbd5e1)";
+
+body.style.borderColor="#dc2626";
+
+legs.style.background=
+"linear-gradient(#e2e8f0,#64748b)";
+
+glove.style.background="#dc2626";
+
+}
+
+/* BOXER */
+
+if(id==="boxer"){
+
+body.style.background=
+"linear-gradient(#dc2626,#7f1d1d)";
+
+body.style.borderColor="#facc15";
+
+legs.style.background="#fff";
+
+glove.style.background="#dc2626";
+
+}
+
+/* CLOWN */
+
+if(id==="clown"){
+
+head.style.background="#eee";
+
+body.style.background=
+"linear-gradient(135deg,#ef4444,#7c3aed)";
+
+body.style.borderColor="#facc15";
+
+legs.style.background="#7c3aed";
+
+glove.style.background="#ef4444";
+
+}
+
+/* BAT */
+
+if(id==="bat"){
+
+body.style.background=
+"linear-gradient(#111827,#020617)";
+
+body.style.borderColor="#64748b";
+
+legs.style.background="#020617";
+
+glove.style.background="#111827";
+
+glove.style.boxShadow="0 0 15px #475569";
+
+}
+
+/* ROBOT */
+
+if(id==="robot"){
+
+head.style.background="#bae6fd";
+
+body.style.background=
+"linear-gradient(#60a5fa,#1e3a8a)";
+
+body.style.borderColor="#bae6fd";
+
+legs.style.background="#2563eb";
+
+glove.style.background="#60a5fa";
+
+}
+
+/* GOLD */
+
+if(id==="gold"){
+
+head.style.background="#fde68a";
+
+body.style.background=
+"linear-gradient(#fef08a,#a16207)";
+
+body.style.borderColor="#fff";
+
+legs.style.background="#a16207";
+
+glove.style.background="#facc15";
+
+glove.style.boxShadow="0 0 20px #facc15";
+
+}
+
+/* FIRE */
+
+if(id==="fire"){
+
+body.style.background=
+"linear-gradient(#f97316,#7c2d12)";
+
+body.style.borderColor="#facc15";
+
+legs.style.background="#9a3412";
+
+glove.style.background="#f97316";
+
+glove.style.boxShadow="0 0 20px #f97316";
+
+}
+
+/* ELECTRIC */
+
+if(id==="electric"){
+
+body.style.background=
+"linear-gradient(#fef08a,#2563eb)";
+
+body.style.borderColor="#60a5fa";
+
+legs.style.background="#2563eb";
+
+glove.style.background="#fef08a";
+
+glove.style.boxShadow="0 0 20px #60a5fa";
+
+}
+
+/* DIAMOND */
+
+if(id==="diamond"){
+
+head.style.background="#cffafe";
+
+body.style.background=
+"linear-gradient(#67e8f9,#0891b2)";
+
+body.style.borderColor="#a5f3fc";
+
+legs.style.background="#155e75";
+
+glove.style.background="#67e8f9";
+
+glove.style.boxShadow="0 0 22px #67e8f9";
+
+}
+
+/* KING */
+
+if(id==="king"){
+
+body.style.background=
+"linear-gradient(#facc15,#581c87)";
+
+body.style.borderColor="#facc15";
+
+legs.style.background="#581c87";
+
+glove.style.background="#facc15";
+
+glove.style.boxShadow="0 0 25px #facc15";
+
+}
+
+/* MESSI ARGENTINA */
+
+if(id==="messi"){
+
+head.style.background="#ffcc99";
+
+body.style.background=
+"linear-gradient(90deg,#74acdf 0 25%,#fff 25% 50%,#74acdf 50% 75%,#fff 75%)";
+
+body.style.borderColor="#74acdf";
+
+legs.style.background="#0f172a";
+
+glove.style.background="#74acdf";
+
+}
+
+/* LAMINE ESPAÑA */
+
+if(id==="lamine"){
+
+head.style.background="#c58c59";
+
+body.style.background=
+"linear-gradient(#dc2626 0 28%,#facc15 28% 72%,#dc2626 72%)";
+
+body.style.borderColor="#facc15";
+
+legs.style.background="#1e3a8a";
+
+glove.style.background="#dc2626";
+
+}
+
+/* CRISTIANO PORTUGAL */
+
+if(id==="cristiano"){
+
+head.style.background="#e0ac69";
+
+body.style.background=
+"linear-gradient(#cc0000 0 70%,#006600 70%)";
+
+body.style.borderColor="#cc0000";
+
+legs.style.background="#006600";
+
+glove.style.background="#cc0000";
+
+}
+
+/* DORAEMON */
+
+if(id==="doraemon"){
+
+head.style.background="#0099ff";
+
+head.style.borderColor="#0077cc";
+
+body.style.background="#fff";
+
+body.style.borderColor="#0099ff";
+
+legs.style.background="#0099ff";
+
+glove.style.background="#fff";
+
+glove.style.boxShadow="0 0 10px #0099ff";
+
+pocket.style.display="block";
+
+bell.style.display="block";
+
+}
+
+/* SONIC */
+
+if(id==="sonic"){
+
+head.style.background="#2563eb";
+
+head.style.borderColor="#172554";
+
+body.style.background=
+"linear-gradient(#2563eb 0 70%,#facc15 70%)";
+
+body.style.borderColor="#172554";
+
+legs.style.background="#dc2626";
+
+glove.style.background="#fff";
+
+glove.style.boxShadow="0 0 15px #2563eb";
+
+}
+
+/* TAILS + GUANTES */
+
+if(id==="tails"){
+
+head.style.background="#f97316";
+
+head.style.borderColor="#7c2d12";
+
+body.style.background=
+"linear-gradient(#facc15 0 65%,#f97316 65%)";
+
+body.style.borderColor="#f97316";
+
+legs.style.background="#2563eb";
+
+glove.style.background="#fff";
+
+glove.style.boxShadow="0 0 15px #facc15";
+
+player.classList.add("tails-equipped");
+
+}
+
+/* POCOYÓ */
+
+if(id==="pocoyo"){
+
+head.style.background="#f5cfa0";
+
+body.style.background=
+"linear-gradient(#2563eb,#1d4ed8)";
+
+body.style.borderColor="#60a5fa";
+
+legs.style.background="#2563eb";
+
+glove.style.background="#60a5fa";
+
+}
+
+/* CRASH */
+
+if(id==="crash"){
+
+head.style.background="#c77b45";
+
+body.style.background=
+"linear-gradient(#2563eb 0 65%,#f97316 65%)";
+
+body.style.borderColor="#f97316";
+
+legs.style.background="#2563eb";
+
+glove.style.background="#fff";
+
+}
+
+/* SHADOW */
+
+if(id==="shadow"){
+
+head.style.background="#e0b08a";
+
+body.style.background=
+"linear-gradient(#111827 0 70%,#dc2626 70%)";
+
+body.style.borderColor="#dc2626";
+
+legs.style.background="#111827";
+
+glove.style.background="#dc2626";
+
+glove.style.boxShadow="0 0 20px #dc2626";
+
+}
+
+}
+
+/* =========================================================
+   UI
+========================================================= */
+
+function updateUI(){
+
+const p=Math.max(
+0,
+playerHP/maxPlayerHP*100
+);
+
+const e=Math.max(
+0,
+enemyHP/maxEnemyHP*100
+);
+
+playerHpBar.style.width=p+"%";
+enemyHpBar.style.width=e+"%";
+
+playerHpText.textContent=
+Math.max(0,Math.ceil(playerHP))
+.toLocaleString();
+
+enemyHpText.textContent=
+Math.max(0,Math.ceil(enemyHP))
+.toLocaleString();
+
+energyEl.style.width=energy+"%";
+
+energyText.textContent=
+"SÚPER "+Math.floor(energy)+"%";
+
+document.getElementById("super-btn")
+.classList.toggle(
+"disabled",
+energy<100
+);
+
+comboEl.textContent=
+combo>=2
+?combo+" COMBO"
+:"";
+
+}
+
+/* =========================================================
+   MOVIMIENTO
+========================================================= */
+
+function movePlayer(dir){
+
+if(gameOver||blocking)return;
+
+playerX+=dir*4;
+
+playerX=Math.max(
+5,
+Math.min(65,playerX)
+);
+
+player.style.left=
+playerX+"%";
+
+energy=Math.min(
+100,
+energy+.8
+);
+
+updateUI();
+
+}
+
+function jump(){
+
+if(gameOver||jumpingNow)return;
+
+jumpingNow=true;
+
+player.classList.add("jumping");
+
+sound("hit");
+
+setTimeout(()=>{
+
+player.classList.remove("jumping");
+
+jumpingNow=false;
+
+},420);
+
+}
+
+function dodge(){
+
+if(gameOver||dodgingNow)return;
+
+dodgingNow=true;
+
+player.classList.add("dodging");
+
+setTimeout(()=>{
+
+player.classList.remove("dodging");
+
+dodgingNow=false;
+
+},280);
+
+}
+
+/* =========================================================
+   BLOQUEO
+========================================================= */
+
+function startBlock(e){
+
+if(e)e.preventDefault();
+
+if(gameOver)return;
+
+blocking=true;
+
+player.style.filter=
+"brightness(1.3) drop-shadow(0 0 12px #60a5fa)";
+
+}
+
+function stopBlock(e){
+
+if(e)e.preventDefault();
+
+blocking=false;
+
+player.style.filter="";
+
+}
+
+/* =========================================================
+   ATAQUES
+========================================================= */
+
+function calculateDamage(type){
+
+let damage=getPlayerStats().attack;
+
+if(type==="heavy")
+damage=Math.round(damage*1.8);
+
+if(type==="super")
+damage=Math.round(
+damage*
+(4+(save.upgrades.super-1)*.5)
+);
+
+if(combo>=5)
+damage=Math.round(damage*1.15);
+
+if(combo>=10)
+damage=Math.round(damage*1.3);
+
+return damage;
+
+}
+
+function registerCombo(){
+
+combo++;
+
+clearTimeout(comboTimer);
+
+comboTimer=setTimeout(()=>{
+
+combo=0;
+
+updateUI();
+
+},1200);
+
+}
+
+function attack(){
+
+if(gameOver||attacking||blocking)return;
+
+attacking=true;
+
+registerCombo();
+
+player.classList.add("punching");
+
+sound("hit");
+
+setTimeout(()=>{
+
+dealDamage("normal");
+
+},100);
+
+setTimeout(()=>{
+
+player.classList.remove("punching");
+
+attacking=false;
+
+},230);
+
+}
+
+function heavyAttack(){
+
+if(gameOver||attacking||blocking)return;
+
+attacking=true;
+
+registerCombo();
+
+player.classList.add("heavying");
+
+sound("heavy");
+
+setTimeout(()=>{
+
+dealDamage("heavy");
+
+},160);
+
+setTimeout(()=>{
+
+player.classList.remove("heavying");
+
+attacking=false;
+
+},340);
+
+}
+
+function superAttack(){
+
+if(gameOver||attacking||blocking)return;
+
+if(energy<100){
+
+showAnnouncer("🔥 ¡SÚPER CARGANDO!");
+
+return;
+
+}
+
+attacking=true;
+
+energy=0;
+
+save.statsData.supersUsed++;
+
+saveGame();
+
+player.classList.add("heavying");
+
+sound("super");
+
+flash.classList.remove("on");
+
+void flash.offsetWidth;
+
+flash.classList.add("on");
+
+createParticles(
+innerWidth*.65,
+innerHeight*.45,
+24
+);
+
+setTimeout(()=>{
+
+dealDamage("super");
+
+},180);
+
+setTimeout(()=>{
+
+player.classList.remove("heavying");
+
+attacking=false;
+
+},450);
+
+}
+
+/* =========================================================
+   DAÑO
+========================================================= */
+
+function dealDamage(type){
+
+if(gameOver)return;
+
+const damage=calculateDamage(type);
+
+enemyHP=Math.max(
+0,
+enemyHP-damage
+);
+
+energy=Math.min(
+100,
+energy+
+(
+type==="heavy"
+?14
+:type==="super"
+?0
+:8
+)
+);
+
+enemy.classList.add("hit");
+
+setTimeout(()=>{
+
+enemy.classList.remove("hit");
+
+},200);
+
+let text="-"+damage.toLocaleString();
+
+let color="#facc15";
+
+if(type==="heavy"){
+
+text="💥 "+text;
+color="#c4b5fd";
+
+}
+
+if(type==="super"){
+
+text="🔥 "+text;
+color="#f97316";
+
+}
+
+const r=enemy.getBoundingClientRect();
+
+showDamage(
+text,
+r.left,
+r.top,
+color
+);
+
+createParticles(
+r.left+r.width/2,
+r.top+r.height/2,
+type==="super"?20:7
+);
+
+updateUI();
+
+if(enemyHP<=0){
+
+winLevel();
+
+}
+
+}
+
+/* =========================================================
+   IA
+========================================================= */
+
+function startEnemyAI(){
+
+stopEnemyAI();
+
+enemyThink=setInterval(()=>{
+
+if(gameOver)return;
+
+if(Math.random()<.45){
+
+let current=
+parseFloat(
+getComputedStyle(enemy).right
+)||17;
+
+current=Math.max(
+5,
+current-2
+);
+
+enemy.style.right=
+current+"%";
+
+}
+
+},700);
+
+let delay;
+
+if(world===2){
+
+delay=
+level===250
+?650
+:level%50===0
+?750
+:950;
+
+}else{
+
+delay=
+level===100
+?750
+:level%10===0
+?900
+:1300;
+
+}
+
+enemyTimer=setInterval(()=>{
+
+if(gameOver)return;
+
+if(Math.random()<.85){
+
+enemyAttack();
+
+setTimeout(()=>{
+
+if(!gameOver)
+enemyDamage();
+
+},260);
+
+}
+
+},delay);
+
+}
+
+function stopEnemyAI(){
+
+if(enemyTimer)
+clearInterval(enemyTimer);
+
+if(enemyThink)
+clearInterval(enemyThink);
+
+enemyTimer=null;
+enemyThink=null;
+
+}
+
+function enemyAttack(){
+
+enemy.style.transition=
+"transform .18s";
+
+enemy.style.transform=
+"scaleX(-1) translateX(-25px)";
+
+setTimeout(()=>{
+
+enemy.style.transform=
+"scaleX(-1)";
+
+},180);
+
+}
+
+function enemyDamage(){
+
+if(dodgingNow){
+
+showDamage(
+"ESQUIVA",
+player.getBoundingClientRect().left,
+player.getBoundingClientRect().top,
+"#34d399"
+);
+
+return;
+
+}
+
+let stats;
+
+if(mode==="training"){
+
+stats={
+damage:50
+};
+
+}else{
+
+stats=getEnemyStats(level);
+
+}
+
+let damage=stats.damage;
+
+/*
+El entrenamiento del boss SIEMPRE hace 50.
+No desbloquea Mundo 2.
+*/
+
+if(mode==="training")
+damage=50;
+
+if(blocking){
+
+let reduction=
+.45+
+Math.min(
+.35,
+(save.upgrades.defense-1)*.025
+);
+
+damage=Math.round(
+damage*(1-reduction)
+);
+
+}else{
+
+const reduction=
+Math.min(
+.55,
+(save.upgrades.defense-1)*.035
+);
+
+damage=Math.round(
+damage*(1-reduction)
+);
+
+}
+
+playerHP=Math.max(
+0,
+playerHP-damage
+);
+
+energy=Math.min(
+100,
+energy+7
+);
+
+showDamage(
+"-"+damage,
+player.getBoundingClientRect().left,
+player.getBoundingClientRect().top,
+"#ef4444"
+);
+
+player.classList.add("hit");
+
+setTimeout(()=>{
+
+player.classList.remove("hit");
+
+},200);
+
+updateUI();
+
+if(playerHP<=0){
+
+loseLevel();
+
+}
+
+}
+
+/* =========================================================
+   VICTORIA
+========================================================= */
+
+function winLevel(){
+
+if(gameOver)return;
+
+gameOver=true;
+
+stopEnemyAI();
+
+sound("win");
+
+let reward;
+
+if(world===2){
+
+reward=
+level===250
+?10000
+:level%50===0
+?1500+level*8
+:150+level*10;
+
+}else{
+
+reward=
+level===100
+?2500
+:level%10===0
+?500+level*5
+:80+level*8;
+
+}
+
+save.coins+=reward;
+
+save.statsData.matchesWon++;
+
+/*
+Solo los bosses reales de campaña cuentan.
+El entrenamiento NO desbloquea Mundo 2.
+*/
+
+if(
+mode==="campaign" &&
+getEnemyStats(level).boss
+){
+
+save.statsData.bossesBeaten++;
+
+}
+
+/* BOSS FINAL MUNDO 1 */
+
+if(
+mode==="campaign" &&
+world===1 &&
+level===100
+){
+
+save.world2Unlocked=true;
+
+save.world1Level=100;
+
+}
+
+/* GUARDAR PROGRESO MUNDO 1 */
+
+if(
+mode==="campaign" &&
+world===1
+){
+
+save.world1Level=
+Math.min(
+100,
+Math.max(
+save.world1Level,
+level
+)
+);
+
+}
+
+/* GUARDAR PROGRESO MUNDO 2 */
+
+if(
+mode==="campaign" &&
+world===2
+){
+
+if(level<250){
+
+save.world2Level=
+Math.max(
+save.world2Level,
+level+1
+);
+
+}else{
+
+save.world2Level=250;
+
+}
+
+}
+
+/* RÉCORD */
+
+if(world===1){
+
+if(level>save.best)
+save.best=level;
+
+}else{
+
+if(100+level>save.best)
+save.best=100+level;
+
+}
+
+saveGame();
+
+updateMenu();
+
+/* RESULTADO */
+
+if(mode==="training"){
+
+resultIcon.textContent="🏆";
+
+resultTitle.textContent=
+"¡ENTRENAMIENTO COMPLETADO!";
+
+resultText.textContent=
+"Has conseguido derrotar al boss en el entrenamiento. ¡Enhorabuena! 🏆";
+
+continueButton.textContent="🥊 REPETIR ENTRENAMIENTO";
+
+}else if(
+world===1 &&
+level===100
+){
+
+resultIcon.textContent="👑🔥";
+
+resultTitle.textContent=
+"¡BOSS FINAL DERROTADO!";
+
+resultText.textContent=
+"Has ganado el nivel 100. ¡Mundo 2 desbloqueado! 🌸";
+
+continueButton.textContent=
+"🌸 IR AL MUNDO 2";
+
+}else if(
+world===2 &&
+level===250
+){
+
+resultIcon.textContent="👑🌸🔥";
+
+resultTitle.textContent=
+"¡MUNDO 2 COMPLETADO!";
+
+resultText.textContent=
+"Has ganado el nivel 250 y derrotado al boss final del Mundo 2. ¡Eres el campeón! 🏆";
+
+continueButton.textContent=
+"🏠 MENÚ";
+
+}else{
+
+resultIcon.textContent="🏆";
+
+resultTitle.textContent=
+"¡NIVEL "+level+" SUPERADO!";
+
+resultText.textContent=
+"Has ganado el nivel "+level+" y has conseguido "+reward+" 🪙.";
+
+continueButton.textContent=
+"➡️ CONTINUAR";
+
+}
+
+result.classList.add("show");
+
+}
+
+/* =========================================================
+   DERROTA
+========================================================= */
+
+function loseLevel(){
+
+if(gameOver)return;
+
+gameOver=true;
+
+stopEnemyAI();
+
+sound("lose");
+
+resultIcon.textContent="💀";
+
+resultTitle.textContent=
+"¡DERROTA!";
+
+resultText.textContent=
+"El rival te ha derrotado.";
+
+continueButton.textContent=
+"🔄 REINTENTAR";
+
+result.classList.add("show");
+
+}
+
+/* =========================================================
+   SIGUIENTE NIVEL
+========================================================= */
+
+function nextLevel(){
+
+result.classList.remove("show");
+
+/* ENTRENAMIENTO */
+
+if(mode==="training"){
+
+startLevel();
+
+return;
+
+}
+
+/* BOSS FINAL MUNDO 1 */
+
+if(
+mode==="campaign" &&
+world===1 &&
+level===100
+){
+
+/*
+No pasa automáticamente al mundo 2.
+El jugador decide.
+*/
+
+menu.classList.add("active");
+gameScreen.classList.remove("active");
+
+updateMenu();
+
+return;
+
+}
+
+/* BOSS FINAL MUNDO 2 */
+
+if(
+mode==="campaign" &&
+world===2 &&
+level===250
+){
+
+returnMenu();
+
+return;
+
+}
+
+/* MUNDO 1 */
+
+if(
+mode==="campaign" &&
+world===1
+){
+
+if(level>=100){
+
+returnMenu();
+
+return;
+
+}
+
+level++;
+
+save.world1Level=
+Math.max(
+save.world1Level,
+level
+);
+
+saveGame();
+
+startLevel();
+
+return;
+
+}
+
+/* MUNDO 2 */
+
+if(
+mode==="campaign" &&
+world===2
+){
+
+if(level>=250){
+
+returnMenu();
+
+return;
+
+}
+
+level++;
+
+save.world2Level=
+Math.max(
+save.world2Level,
+level
+);
+
+saveGame();
+
+startLevel();
+
+return;
+
+}
+
+/* 1VS1 */
+
+if(mode==="1vs1"){
+
+level++;
+
+if(level>100)
+level=1;
+
+startLevel();
+
+}
+
+}
+
+/* =========================================================
+   EFECTOS
+========================================================= */
+
+function showDamage(text,x,y,color){
+
+const d=document.createElement("div");
+
+d.className="damage";
+
+d.textContent=text;
+
+d.style.left=x+"px";
+d.style.top=y+"px";
+d.style.color=color;
+
+effects.appendChild(d);
+
+setTimeout(()=>d.remove(),800);
+
+}
+
+function createParticles(x,y,count){
+
+for(let i=0;i<count;i++){
+
+const p=document.createElement("div");
+
+p.className="particle";
+
+p.style.left=x+"px";
+p.style.top=y+"px";
+
+const angle=
+Math.random()*Math.PI*2;
+
+const distance=
+30+Math.random()*100;
+
+p.style.setProperty(
+"--x",
+Math.cos(angle)*distance+"px"
+);
+
+p.style.setProperty(
+"--y",
+Math.sin(angle)*distance+"px"
+);
+
+effects.appendChild(p);
+
+setTimeout(()=>p.remove(),600);
+
+}
+
+}
+
+function showAnnouncer(text){
+
+announcer.textContent=text;
+
+announcer.classList.remove("show");
+
+void announcer.offsetWidth;
+
+announcer.classList.add("show");
+
+}
+
+/* =========================================================
+   MEJORAS
+========================================================= */
+
+function upgradeCost(type){
+
+const lvl=save.upgrades[type];
+
+const base={
+health:100,
+attack:100,
+defense:150,
+super:200
+}[type];
+
+return Math.round(
+base*Math.pow(1.45,lvl-1)
+);
+
+}
+
+function buyUpgrade(type){
+
+const cost=upgradeCost(type);
+
+if(save.coins<cost){
+
+showAnnouncer(
+"❌ ¡NO TIENES MONEDAS!"
+);
+
+return;
+
+}
+
+save.coins-=cost;
+
+save.upgrades[type]++;
+
+saveGame();
+
+updateUpgradeUI();
+
+updateMenu();
+
+showAnnouncer(
+"⬆️ ¡MEJORA!"
+);
+
+}
+
+function updateUpgradeUI(){
+
+["health","attack","defense","super"]
+.forEach(type=>{
+
+document.getElementById(type+"-level")
+.textContent=
+"NV "+save.upgrades[type];
+
+document.getElementById(type+"-cost")
+.textContent=
+upgradeCost(type);
+
+});
+
+}
+
+/* =========================================================
+   MISIONES
+========================================================= */
+
+function openMissions(){
+
+const list=
+document.getElementById("missions-list");
+
+list.innerHTML=`
+
+<div class="upgradeBox">
+
+🎯 <b>Veterano del Ring</b>
+
+<p>Gana 3 peleas</p>
+
+<p>
+${Math.min(3,save.statsData.matchesWon)}/3
+</p>
+
+<button onclick="claimMission('m1',200)">
+RECLAMAR 200 🪙
+</button>
+
+</div>
+
+<div class="upgradeBox">
+
+👑 <b>Cazador de Jefes</b>
+
+<p>Derrota un jefe</p>
+
+<p>
+${Math.min(1,save.statsData.bossesBeaten)}/1
+</p>
+
+<button onclick="claimMission('m2',500)">
+RECLAMAR 500 🪙
+</button>
+
+</div>
+
+<div class="upgradeBox">
+
+🔥 <b>Poder Interior</b>
+
+<p>Usa el súper 5 veces</p>
+
+<p>
+${Math.min(5,save.statsData.supersUsed)}/5
+</p>
+
+<button onclick="claimMission('m3',350)">
+RECLAMAR 350 🪙
+</button>
+
+</div>
+
+`;
+
+document.getElementById("mission-screen")
+.classList.add("show");
+
+}
+
+function claimMission(id,reward){
+
+if(save.missions[id])
+return;
+
+const req={
+
+m1:save.statsData.matchesWon>=3,
+
+m2:save.statsData.bossesBeaten>=1,
+
+m3:save.statsData.supersUsed>=5
+
+};
+
+if(!req[id]){
+
+showAnnouncer(
+"❌ ¡AÚN NO!"
+);
+
+return;
+
+}
+
+save.missions[id]=true;
+
+save.coins+=reward;
+
+saveGame();
+
+updateMenu();
+
+openMissions();
+
+showAnnouncer(
+"🏆 ¡MISIÓN COMPLETADA!"
+);
+
+}
+
+/* =========================================================
+   TECLADO
+========================================================= */
+
+document.addEventListener("keydown",e=>{
+
+if(!gameScreen.classList.contains("active"))
+return;
+
+if(e.key==="ArrowLeft")
+movePlayer(-1);
+
+if(e.key==="ArrowRight")
+movePlayer(1);
+
+if(e.key==="ArrowUp"||e.key==="w")
+jump();
+
+if(e.key==="a")
+attack();
+
+if(e.key==="s")
+heavyAttack();
+
+if(e.key==="d")
+superAttack();
+
+if(e.key===" ")
+startBlock(e);
+
+});
+
+document.addEventListener("keyup",e=>{
+
+if(e.key===" ")
+stopBlock(e);
+
+});
+
+/* =========================================================
+   PREVENIR ZOOM SIN ROMPER BOTONES
+========================================================= */
+
+document.addEventListener(
+"touchmove",
+e=>{
+
+if(
+e.target.closest(".shop-scroll-container")
+){
+
+return;
+
+}
+
+e.preventDefault();
+
+},
+{
+passive:false
+}
+);
+
+document.addEventListener(
+"gesturestart",
+e=>e.preventDefault()
+);
+
+document.addEventListener(
+"gesturechange",
+e=>e.preventDefault()
+);
+
+document.addEventListener(
+"gestureend",
+e=>e.preventDefault()
+);
+
+/*
+Evita que el navegador convierta los toques
+en gestos raros, pero permite pulsar botones.
+*/
+
+document.addEventListener(
+"contextmenu",
+e=>e.preventDefault()
+);
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+migrateOldSave();
+
+loadSave();
+
+applySkin();
+
+updateMenu();
+
+</script>
+
+</body>
+</html>
